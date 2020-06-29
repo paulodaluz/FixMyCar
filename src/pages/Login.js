@@ -1,35 +1,79 @@
 import React from 'react'
-import { StyleSheet, Text, TextInput, View } from 'react-native'
+import { StyleSheet, Text, TextInput, View, ImageBackground, Button } from 'react-native'
+import { useLayoutEffect, useEffect } from 'react'
 
-export default function Login() {
+export default function Login(props) {
+    const {navigation} = props
+
+    const validarLogin = () =>{
+        navigation.replace('Home')
+    }
+
     return (
-        <View style={styles.container}>
-            <Text>FixMyCar</Text>
-            <TextInput style={styles.caixaTexto}
-                placeholder = 'e-mail'
-            />
-            <TextInput style={styles.caixaTexto}
-                placeholder = 'password'
-            />
-        </View>
+        <ImageBackground
+            source={require('./login.png')}
+            style={{
+                width: '100%',
+                height: '100%'
+            }}
+        >            
+            <View style={styles.container}>
+                <Text style={styles.texto}>FixMyCar</Text>             
+                <TextInput style={styles.caixaTexto}
+                    placeholder='e-mail'
+                />
+                <TextInput style={styles.caixaTexto}
+                    placeholder='password'
+                    secureTextEntry                    
+                />
+                <View style={styles.botao}>
+                    <Button  
+                        title= "Login"
+                        color= "#8B7D39"
+                        onPress= {validarLogin}
+                    />
+                </View>
+                <View style={styles.botao}>
+                    <Button  
+                        title= "Register"
+                        color= "#8B7D39"
+                    />
+                </View>                              
+            </View>
+        </ImageBackground>
     )
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor:'#fff',
-        alignItems:'center',
+        //backgroundColor: '#fff',
+        alignItems: 'center',
         justifyContent: 'center'
+    },
+    texto: {
+        marginTop: 15 ,
+        textAlign: 'center',
+        color: '#fff',
+        fontWeight: 'bold',
+        fontSize : 30
     },
     caixaTexto: {
         width: "80%",
-        borderWidth: 1,
+        borderWidth: 2,
         borderRadius: 15,
-        borderColor: '#032EDC',
+        borderColor: '#8B7D39',
+        backgroundColor: '#fff',
         padding: 5,
         marginTop: 10,
         marginBottom: 10
     },
-
+    botao: {
+        borderRadius: 10,
+        borderWidth: 2,
+        borderColor: '#8B7D39', 
+        width: "80%",
+        padding: 5,
+        marginTop: 5
+    }
 })

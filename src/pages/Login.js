@@ -1,12 +1,11 @@
 import React from 'react'
 import { StyleSheet, Text, TextInput, View, ImageBackground, Button } from 'react-native'
-import { useLayoutEffect, useEffect } from 'react'
 
 export default function Login(props) {
     const {navigation} = props
 
     const validarLogin = () =>{
-        navigation.replace('Home')
+        navigation.navigate('Home')
     }
 
     return (
@@ -18,7 +17,6 @@ export default function Login(props) {
             }}
         >            
             <View style={styles.container}>
-                <Text style={styles.texto}>FixMyCar</Text>             
                 <TextInput style={styles.caixaTexto}
                     placeholder='e-mail'
                 />

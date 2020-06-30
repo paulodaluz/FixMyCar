@@ -1,38 +1,38 @@
-import * as React from 'react'
-import { StyleSheet, Text, View, Button } from 'react-native'
+import React, {useLayoutEffect} from 'react'
+import { StyleSheet, Text, View } from 'react-native'
+import { Entypo } from '@expo/vector-icons'
 
-import { createDrawerNavigator } from '@react-navigation/drawer';
-//import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+export default function Home({navigation,route}) {
 
-function MenuSide({ navigation }) {
-    const superior = navigation
-    const Drawer = createDrawerNavigator();
-    return (
-      <Drawer.Navigator 
-        hideStatusBar={false}
-        drawerStyle={{
-          backgroundColor: 'white',
-          width: 240,
-        }}
-      >
-        <Drawer.Screen name="Home"/>
-        <Drawer.Screen name="Contato" />
-      </Drawer.Navigator>
-    )
-  }
+  const superior = route.params.superior
 
-export default function Home() {
-    const Stack = createStackNavigator();
-    return (
-        //<NavigationContainer>
-        <Stack.Navigator>
-          <Stack.Screen name="App"
-            component={MenuSide}
-          />
-        </Stack.Navigator>
-      //</NavigationContainer>
-    )
+  useLayoutEffect(() => {
+    superior.setOptions({
+        title: 'FixMyCar',
+        headerLeft: () => (
+            <Entypo
+                name="menu"
+                size={24}
+                color="black"
+                onPress={() => navigation.openDrawer()}
+                style={{ marginLeft: 20 }}
+            />
+        ),
+    });
+  }, []);
+
+  return (
+    <View style={styles.container}>
+      <Text>HOME</Text>
+    </View>
+  )
 }
 
-//const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+}  
+})

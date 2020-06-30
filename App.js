@@ -8,6 +8,10 @@ import {createDrawerNavigator, DrawerA} from '@react-navigation/drawer'
 
 import Login from './src/pages/Login'
 import Home from './src/pages/Home'
+import Veiculos from './src/pages/Veiculos'
+import Contatos from './src/pages/Contatos'
+import Manutencoes from './src/pages/Manutencoes'
+import Consumos from './src/pages/Consumos'
 
 /* Wannings Ignorados */
 import { YellowBox } from 'react-native';
@@ -27,6 +31,10 @@ function MenuSide({ navigation }) {
       }}
     >
       <Drawer.Screen name="Home" component={Home} initialParams={{superior}} />
+      <Drawer.Screen name="Veiculos" component={Veiculos} />
+      <Drawer.Screen name="Contatos" component={Contatos} />
+      <Drawer.Screen name="Manutenções" component={Manutencoes} />
+      <Drawer.Screen name="Consumos" component={Consumos} />
       <Drawer.Screen name="Login" component={Login} />
     </Drawer.Navigator>
   )

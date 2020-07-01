@@ -14,4 +14,4 @@ web-report/
 # macOS
 .DS_Store
 yarn.lock
-pakcage-lock.json
+package-lock.json

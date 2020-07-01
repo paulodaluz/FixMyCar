@@ -1,12 +1,24 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import { StyleSheet, Text, TextInput, View, ImageBackground, Button } from 'react-native'
 
 export default function Login(props) {
     const {navigation} = props
+    const {route} = props
+    const superior =  route.params ? route.params.superior : ""
 
     const validarLogin = () =>{
-        navigation.navigate('Home')
+        navigation.navigate('MenuSide')
     }
+
+    useEffect(() => {
+        if (route.params){
+            if (route.params.funcao=="logout"){
+                superior.goBack()
+                //console.log(superior)
+            }
+        }
+
+    }, [route.params])
 
     return (
         <ImageBackground

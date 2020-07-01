@@ -23,7 +23,7 @@ function MenuSide({ navigation }) {
   const superior = navigation
   const Drawer = createDrawerNavigator();
   return (
-    <Drawer.Navigator initialRouteName="Login"
+    <Drawer.Navigator initialRouteName="Home"
       hideStatusBar={false}
       drawerStyle={{
         backgroundColor: 'white',
@@ -35,7 +35,7 @@ function MenuSide({ navigation }) {
       <Drawer.Screen name="Contatos" component={Contatos} />
       <Drawer.Screen name="Manutenções" component={Manutencoes} />
       <Drawer.Screen name="Consumos" component={Consumos} />
-      <Drawer.Screen name="Login" component={Login} />
+      <Drawer.Screen name="Login" component={Login} initialParams={{superior,funcao: 'logout'}} />
     </Drawer.Navigator>
   )
 }
@@ -44,12 +44,15 @@ export default function App() {
   const Stack = createStackNavigator();
   return (
     <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="FixMyCar"
+      <Stack.Navigator initialRouteName="Login">
+        <Stack.Screen name="MenuSide"
           component={MenuSide}
           options={{
             headerTitleAlign: "center"
           }}
+        />
+        <Stack.Screen name="Login"
+          component={Login}
         />
       </Stack.Navigator>
     </NavigationContainer>

@@ -31,7 +31,7 @@ export default function Home({navigation,route}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#8B7D39',
     alignItems: 'center',
     justifyContent: 'center',
 }  

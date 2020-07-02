@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native'
+import { decode, encode } from 'base-64'
 
 import 'react-native-gesture-handler'
 import {NavigationContainer} from '@react-navigation/native'
@@ -12,6 +13,13 @@ import Veiculos from './src/pages/Veiculos'
 import Contatos from './src/pages/Contatos'
 import Manutencoes from './src/pages/Manutencoes'
 import Consumos from './src/pages/Consumos'
+
+if (!global.btoa) {
+  global.btoa = encode
+}
+if (!global.atob) {
+  global.atob = decode
+}
 
 /* Wannings Ignorados */
 import { YellowBox } from 'react-native';
@@ -35,7 +43,7 @@ function MenuSide({ navigation }) {
       <Drawer.Screen name="Contatos" component={Contatos} />
       <Drawer.Screen name="Manutenções" component={Manutencoes} />
       <Drawer.Screen name="Consumos" component={Consumos} />
-      <Drawer.Screen name="Login" component={Login} initialParams={{superior,funcao: 'logout'}} />
+      <Drawer.Screen name="Logoff" component={Login} initialParams={{superior,funcao: 'logout'}} />
     </Drawer.Navigator>
   )
 }

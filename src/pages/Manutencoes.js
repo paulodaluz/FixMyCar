@@ -32,7 +32,7 @@ export default function Manutencoes() {
     
             await pegarManutencao()
                 .then((res) => {
-                    setMensagem("Dados Inseridos com Sucesso!");
+                    
                 })
                 .catch((err) => {
                     setMensagem(err);

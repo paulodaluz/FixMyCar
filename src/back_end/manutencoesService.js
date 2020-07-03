@@ -1,4 +1,4 @@
-import { db } from "../database/firebase";
+import { db } from "./firebase";
 
 export const salvarManutencao = (manutencao, chave = "") => {
   if (chave === "") {

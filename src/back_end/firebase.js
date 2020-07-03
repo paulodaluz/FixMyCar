@@ -2,19 +2,20 @@ import * as firebase from "firebase"
 import firestore from 'firebase/firestore'
 
 const firebaseConfig = {
-    apiKey: "AIzaSyCiQ385w0l9v6JlfSKDjS3WfVg103G7IAY",
-    authDomain: "fixmycar-c4163.firebaseapp.com",
-    databaseURL: "https://fixmycar-c4163.firebaseio.com",
-    projectId: "fixmycar-c4163",
-    storageBucket: "fixmycar-c4163.appspot.com",
-    messagingSenderId: "71209466246",
-    appId: "1:71209466246:web:165400e9a77b036c85d407"
+    apiKey: "AIzaSyASzSm_JyyMbuTT7xtul6TAYCDvGQiqcK8",
+    authDomain: "fixmycar-9038a.firebaseapp.com",
+    databaseURL: "https://fixmycar-9038a.firebaseio.com",
+    projectId: "fixmycar-9038a",
+    storageBucket: "fixmycar-9038a.appspot.com",
+    messagingSenderId: "472645358792",
+    appId: "1:472645358792:web:8c45f42b2a69e9bb0141fd"
 };
 
-const firebaseApp = firebase.app.length > 0 ?
-    firebase.initializeApp(firebaseConfig)
-    :
-    firebase.app()
+const firebaseApp =
+    firebase.app.length > 0
+        ? firebase.initializeApp(firebaseConfig)
+        : firebase.app();
 
-const db = firebaseApp.firestore()
-export { db, firebase }
+const db = firebaseApp.firestore();
+//export default db;
+export { db, firebase };

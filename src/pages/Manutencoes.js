@@ -1,15 +1,54 @@
-import React, {useState} from 'react'
-import { StyleSheet, View, Text, TextInput, Button, FlatList } from 'react-native'
-
+import React, {useState, useEffect} from 'react'
+import { StyleSheet, View, Text, TextInput, Button, FlatList, TouchableOpacity } from 'react-native'
+import { salvarManutencao, pegarManutencao, deletarManutencao } from '../back_end/manutencoesService';
 
 export default function Manutencoes() {
     const [descricao, setDescricao] = useState("");
     const [data, setData] = useState("");
     const [detalhamento, setDetalhamento] = useState("");
     const [valor, setValor] = useState("");
+    const [mensagem, setMensagem] = useState("");
+    const [manutencoes, setManutencoes] = useState([]);
     
-    const criarManutencao = () => {
-        
+    const criarManutencao = async() => {
+        clearImputs()
+        if (!data || !descricao || !detalhamento || !valor) {
+            setMensagem("Campos Inválidos");
+        } else {
+            const manutencao = {
+                descricao,
+                data,
+                detalhamento,
+                valor
+            };
+    
+            await salvarManutencao(manutencao, '')
+                .then((res) => {
+                    setMensagem("Dados Inseridos com Sucesso!");
+                })
+                .catch((err) => {
+                    setMensagem(err);
+                });
+    
+            await pegarManutencao()
+                .then((res) => {
+                    setMensagem("Dados Inseridos com Sucesso!");
+                })
+                .catch((err) => {
+                    setMensagem(err);
+                });
+        }
+    }
+
+    const getManutencoes = () => {
+        pegarManutencao()
+            .then((retorno) => {
+                setManutencoes(retorno);
+            })
+            .catch((erro) => console.log(erro));
+    };
+
+    const deleteManutencao = () => {
 
     }
 
@@ -18,7 +57,12 @@ export default function Manutencoes() {
         setDetalhamento('')
         setData('')
         setDescricao('')
+        setMensagem('')
     }
+
+    useEffect(() => {
+        getManutencoes();
+    }, []);
 
     return (
         <View style={styles.container}>
@@ -44,6 +88,7 @@ export default function Manutencoes() {
                     keyboardType='numeric'
                     onChangeText={texto => setValor(texto)}
                 />
+                <Text style={styles.mensagemErro}>{mensagem}</Text>
             </View>
             <View style={styles.box2}>
                 <View style={styles.botao}>
@@ -63,6 +108,30 @@ export default function Manutencoes() {
                     />
                 </View>
             </View>
+            <View>
+                <FlatList
+                    data={manutencoes}
+                    renderItem={({ item }) => (
+                        <TouchableOpacity
+                            onPress={() => {
+                                console.log('aaaa', item)
+                            }}
+                        >
+                            <View style={styles.box}>
+                                <View style={styles.boxCollum}>
+                                    <Text style={styles.boxTitle}>{item.name}</Text>
+                                    <Text>descricao: {item.descricao}</Text>
+                                    <Text>data: {item.data}</Text>
+                                    <Text>detalhamento: {item.detalhamento}</Text>
+                                    <Text>valor: {item.valor}</Text>
+                                </View>
+                                <View style={styles.boxCollumAction}></View>
+                            </View>
+                        </TouchableOpacity>
+                    )}
+                />
+            </View>
+
         </View>
     )
 }
@@ -112,5 +181,29 @@ const styles = StyleSheet.create({
         padding: 5,
         marginTop: 5,
         paddingTop: 0
-    }
+    },
+    mensagemErro: {
+        marginTop: 10,
+        color: "red",
+    },
+    box: {
+        backgroundColor: '#fff',
+        flexDirection: "row",
+        width: "95%",
+        borderWidth: 1,
+        borderRadius: 10,
+        borderColor: "gray",
+        padding: 10,
+        marginTop: 10,
+    },
+    boxCollum: {
+        width: "80%",
+    },
+    boxCollumAction: {
+        width: "20%",
+    },
+    boxTitle: {
+        fontWeight: "bold",
+        color: "blue",
+    },
 })

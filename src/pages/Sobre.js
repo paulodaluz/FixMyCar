@@ -1,6 +1,5 @@
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
-const { version } = require('../../package.json');
 const { expo } = require('../../app.json');
 
 export default function Sobre() {
@@ -8,7 +7,7 @@ export default function Sobre() {
         <View style={styles.container}>
             <Text style={styles.texto}>App criado utilizando expo CLI</Text>
             <Text>Nome: {expo.name}</Text>
-            <Text>Vesão: {version}</Text>
+            <Text>Vesão: 1.0</Text>
         </View>
     )
 }

@@ -1,23 +1,57 @@
-import React, {useEffect} from 'react'
-import { StyleSheet, Text, TextInput, View, ImageBackground, Button } from 'react-native'
+import React, {useState , useEffect} from 'react'
+import { ActivityIndicator, StyleSheet, Text, TextInput, View, ImageBackground, Button } from 'react-native'
+import * as authService from '../service/authService'
 
 export default function Login(props) {
+
+    const [mensagem, setMensagem] = useState("")
+    const [email, setEmail] = useState()
+    const [password, setPasswrd] = useState()
+    const [loading, setLoaging] = useState(false)
     const {navigation} = props
     const {route} = props
     const superior =  route.params ? route.params.superior : ""
 
-    const validarLogin = () =>{
-        navigation.navigate('MenuSide')
+
+    const registrarLogin = () => {
+        setLoaging(true)
+        authService.register(email, password)
+        .then(retorno => {
+            setMensagem("Registro efetuado com Sucesso !!!")
+            setPasswrd()
+            setLoaging(false)                       
+          })
+          .catch(erro => {
+            setMensagem("Erro ao registrar novo Login !!!")
+            setLoaging(false)
+          })
+                    
     }
+
+    const validarLogin = () => {
+        setLoaging(true)        
+        authService.login(email, password)
+          .then(retorno => {
+            navigation.navigate('MenuSide')
+            setEmail()
+            setPasswrd()  
+            setMensagem()
+            setLoaging(false)             
+          })
+          .catch(erro => {
+            //setMensagem(erro.message)
+            setMensagem("e-mail ou senha incorreto !!!")
+            setLoaging(false)
+          })
+          
+      }
 
     useEffect(() => {
         if (route.params){
             if (route.params.funcao=="logout"){
                 superior.goBack()
-                //console.log(superior)
             }
         }
-
     }, [route.params])
 
     return (
@@ -29,13 +63,19 @@ export default function Login(props) {
             }}
         >            
             <View style={styles.container}>
+                <Text style={styles.texto}>{mensagem}</Text>                
                 <TextInput style={styles.caixaTexto}
                     placeholder='e-mail'
+                    value={email}
+                    onChangeText={texto => setEmail(texto)}
                 />
                 <TextInput style={styles.caixaTexto}
                     placeholder='password'
+                    value={password}
+                    onChangeText={texto => setPasswrd(texto)}
                     secureTextEntry                    
                 />
+                <ActivityIndicator animating={loading} size="small" color="#F3FF00" />                            
                 <View style={styles.botao}>
                     <Button  
                         title= "Login"
@@ -47,6 +87,7 @@ export default function Login(props) {
                     <Button  
                         title= "Register"
                         color= "#8B7D39"
+                        onPress={registrarLogin}
                     />
                 </View>                              
             </View>
@@ -66,7 +107,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         color: '#fff',
         fontWeight: 'bold',
-        fontSize : 30
+        fontSize : 15
     },
     caixaTexto: {
         width: "80%",
@@ -75,8 +116,8 @@ const styles = StyleSheet.create({
         borderColor: '#8B7D39',
         backgroundColor: '#fff',
         padding: 5,
-        marginTop: 10,
-        marginBottom: 10
+        marginTop: 5,
+        marginBottom: 5
     },
     botao: {
         borderRadius: 10,

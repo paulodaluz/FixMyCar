@@ -14,6 +14,10 @@ import Manutencoes from './src/pages/Manutencoes'
 import Consumos from './src/pages/Consumos'
 import Sobre from './src/pages/Sobre'
 
+//Desabilitano Warnings
+import { YellowBox } from 'react-native'
+YellowBox.ignoreWarnings(['Setting a timer'])
+
 if (!global.btoa) {
   global.btoa = encode
 }
@@ -21,11 +25,7 @@ if (!global.atob) {
   global.atob = decode
 }
 
-/* Wannings Ignorados */
-import { YellowBox } from 'react-native';
-YellowBox.ignoreWarnings([
-  'Non-serializable values were found in the navigation state',
-]);
+
 
 function MenuSide({ navigation }) {
   const superior = navigation

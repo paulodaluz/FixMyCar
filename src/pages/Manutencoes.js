@@ -40,16 +40,16 @@ export default function Manutencoes() {
         }
     }
 
-    const getManutencoes = () => {
-        pegarManutencao()
+    const getManutencoes = async() => {
+        await pegarManutencao()
             .then((retorno) => {
                 setManutencoes(retorno);
             })
             .catch((erro) => console.log(erro));
     };
 
-    const deleteManutencao = () => {
-
+    const deleteManutencao = async(manutencao) => {
+        await deletarManutencao(manutencao)
     }
 
     const clearImputs = () => {
@@ -95,7 +95,11 @@ export default function Manutencoes() {
                     <Button
                         title="Salvar"
                         color="#fff"
-                        onPress={criarManutencao}
+                        onPress={() => {
+                            criarManutencao()
+                            clearImputs()
+                            getManutencoes()
+                        }}
                     />
                 </View>
             </View>
@@ -114,7 +118,8 @@ export default function Manutencoes() {
                     renderItem={({ item }) => (
                         <TouchableOpacity
                             onPress={() => {
-                                console.log('aaaa', item)
+                                deleteManutencao(item)
+                                getManutencoes()
                             }}
                         >
                             <View style={styles.box}>

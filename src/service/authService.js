@@ -1,4 +1,4 @@
-import { firebase } from '../back_end/firebase'
+import {firebase} from '../back_end/firebase'
 
 export const register = (email, password) => {
 

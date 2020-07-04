@@ -96,7 +96,7 @@ export default function Consumos() {
                 <View style={styles.botao}>
                     <Button
                         title="Salvar"
-                        color="#fff"
+                        color="#8B7D39"
                         onPress={() => {
                             criarConsumo()
                             clearImputs()
@@ -109,12 +109,12 @@ export default function Consumos() {
                 <View style={styles.botao}>
                     <Button
                         title="Limpar"
-                        color="#fff"
+                        color="#8B7D39"
                         onPress={clearImputs}
                     />
                 </View>
             </View>
-            <View>
+            <View style={styles.box3}>
                 <FlatList
                     data={consumos}
                     renderItem={({ item }) => (
@@ -147,12 +147,12 @@ const styles = StyleSheet.create({
         backgroundColor: '#8B7D39',
         alignItems: 'center',
         flexDirection: 'row',
-        flexWrap: 'wrap',
+        flexWrap: 'wrap',        
         justifyContent: 'center'
     },
     box1: {
         width: "95%",
-        height: 180,
+        height: 215,
         margin: 5,
         alignItems: 'center'
     },
@@ -169,7 +169,7 @@ const styles = StyleSheet.create({
         marginTop: 5
     },
     caixaTexto: {
-        width: "90%",
+        width: "90%",        
         borderWidth: 1,
         borderRadius: 10,
         borderColor: '#fff',
@@ -181,11 +181,10 @@ const styles = StyleSheet.create({
     botao: {
         borderRadius: 10,
         borderWidth: 1,
-        borderColor: '#fff',
+        borderColor: '#fff', 
         width: "80%",
         padding: 5,
-        marginTop: 5,
-        paddingTop: 0
+        marginTop: 5
     },
     mensagemErro: {
         marginTop: 10,

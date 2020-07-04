@@ -3,9 +3,9 @@ import { StyleSheet, Text, View } from 'react-native'
 import { decode, encode } from 'base-64'
 
 import 'react-native-gesture-handler'
-import {NavigationContainer} from '@react-navigation/native'
-import {createStackNavigator} from '@react-navigation/stack'
-import {createDrawerNavigator, DrawerA} from '@react-navigation/drawer'
+import { NavigationContainer } from '@react-navigation/native'
+import { createStackNavigator } from '@react-navigation/stack'
+import { createDrawerNavigator, DrawerA } from '@react-navigation/drawer'
 
 import Login from './src/pages/Login'
 import Home from './src/pages/Home'
@@ -38,12 +38,12 @@ function MenuSide({ navigation }) {
         width: 240,
       }}
     >
-      <Drawer.Screen name="Home" component={Home} initialParams={{superior}} />
+      <Drawer.Screen name="Home" component={Home} initialParams={{ superior }} />
       <Drawer.Screen name="Contatos" component={Contatos} />
       <Drawer.Screen name="Manutenções" component={Manutencoes} />
       <Drawer.Screen name="Consumos" component={Consumos} />
       <Drawer.Screen name="Sobre" component={Sobre} />
-      <Drawer.Screen name="Logoff" component={Login} initialParams={{superior,funcao: 'logout'}} />
+      <Drawer.Screen name="Logoff" component={Login} initialParams={{ superior, funcao: 'logout' }} />
     </Drawer.Navigator>
   )
 }

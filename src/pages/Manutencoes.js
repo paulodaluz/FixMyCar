@@ -1,6 +1,6 @@
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import { StyleSheet, View, Text, TextInput, Button, FlatList, TouchableOpacity } from 'react-native'
-import { salvarManutencao, pegarManutencao, deletarManutencao } from '../back_end/manutencoesService';
+import { salvarManutencao, pegarManutencao, deletarManutencao } from '../service/manutencoesService';
 
 export default function Manutencoes() {
     const [descricao, setDescricao] = useState("");
@@ -9,8 +9,8 @@ export default function Manutencoes() {
     const [valor, setValor] = useState("");
     const [mensagem, setMensagem] = useState("");
     const [manutencoes, setManutencoes] = useState([]);
-    
-    const criarManutencao = async() => {
+
+    const criarManutencao = async () => {
         clearImputs()
         if (!data || !descricao || !detalhamento || !valor) {
             setMensagem("Campos Inválidos");
@@ -21,7 +21,7 @@ export default function Manutencoes() {
                 detalhamento,
                 valor
             };
-    
+
             await salvarManutencao(manutencao, '')
                 .then((res) => {
                     setMensagem("Dados Inseridos com Sucesso!");
@@ -29,10 +29,10 @@ export default function Manutencoes() {
                 .catch((err) => {
                     setMensagem(err);
                 });
-    
+
             await pegarManutencao()
                 .then((res) => {
-                    
+                    setManutencoes(res);
                 })
                 .catch((err) => {
                     setMensagem(err);
@@ -40,15 +40,15 @@ export default function Manutencoes() {
         }
     }
 
-    const getManutencoes = async() => {
+    const getManutencoes = async () => {
         await pegarManutencao()
-            .then((retorno) => {
-                setManutencoes(retorno);
+            .then((res) => {
+                setManutencoes(res);
             })
             .catch((erro) => console.log(erro));
     };
 
-    const deleteManutencao = async(manutencao) => {
+    const deleteManutencao = async (manutencao) => {
         await deletarManutencao(manutencao)
     }
 
@@ -124,7 +124,6 @@ export default function Manutencoes() {
                         >
                             <View style={styles.box}>
                                 <View style={styles.boxCollum}>
-                                    <Text style={styles.boxTitle}>{item.name}</Text>
                                     <Text>descricao: {item.descricao}</Text>
                                     <Text>data: {item.data}</Text>
                                     <Text>detalhamento: {item.detalhamento}</Text>

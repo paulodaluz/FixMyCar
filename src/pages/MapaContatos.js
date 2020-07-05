@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { StyleSheet, Button, View, Dimensions, Alert } from 'react-native'
+import MapView, { Marker } from 'react-native-maps'
 import * as contatosService from '../service/contatosService'
-import * as Location from 'expo-location';
-import MapView, { Marker } from 'react-native-maps';
+import * as Location from 'expo-location'
 
 //import orangeMarkerImg from '../img/blueMarker.png'
 
@@ -64,6 +64,9 @@ export default function MapaContatos() {
                 />
                     : null}
             </MapView>
+            <Button 
+                title= "Voltar"
+            />
         </View>    )
 }
 

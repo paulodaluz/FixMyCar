@@ -1,11 +1,12 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useLayoutEffect} from 'react'
 import { ActivityIndicator, StyleSheet, View, Text, TextInput, Button, FlatList, TouchableOpacity } from 'react-native'
 import * as contatosService from '../service/contatosService'
 import * as Location from 'expo-location'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
-export default function Contatos() {
+export default function Contatos(props) {
 
+    const { navigation } = props
     const [loading, setLoaging] = useState(false);
     const [key, setKey] = useState("");
     const [contacts, setContacts] = useState([]);
@@ -17,7 +18,7 @@ export default function Contatos() {
     const [tipo, setTipo] = useState("");
     const [longitude,setLongitude] = useState("");
     const [latitude, setLatitude] = useState('');
-    const [mensagem, setMensagem] = useState('');    
+    const [mensagem, setMensagem] = useState('');
 
     const clearImputs = () => {
         setNome("")
@@ -84,8 +85,13 @@ export default function Contatos() {
           .catch(erro => console.log(erro))              
     }     
 
+    const back = () => {
+        navigation.navigate('Home')
+    }
+    
     useEffect(() => {
-        getContacts()
+        clearImputs()
+        //getContacts()
     }, [])
 
     return (
@@ -135,7 +141,15 @@ export default function Contatos() {
                     />
                 </View>
             </View>
-
+            <View style={styles.box2}>
+                <View style={styles.botao}>
+                    <Button
+                        title="Voltar"
+                        color= "#8B7D39"
+                        onPress={back}
+                    />
+                </View>
+            </View>            
             <View style={styles.box3}>
                 <ActivityIndicator animating={loading} size="small" color="#F3FF00" />
                 <FlatList

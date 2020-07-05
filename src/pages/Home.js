@@ -8,7 +8,7 @@ export default function Home({ navigation, route }) {
 
   useLayoutEffect(() => {
     superior.setOptions({
-      title: 'FixMyCar',
+      title: 'Home FixMyCar',
       headerLeft: () => (
         <Entypo
           name="menu"

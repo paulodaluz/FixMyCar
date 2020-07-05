@@ -3,8 +3,9 @@ import {ActivityIndicator, StyleSheet, View, Text, TextInput, Button, FlatList, 
 import * as manutencaoService from '../service/manutencoesService'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
-export default function Manutencoes() {
+export default function Manutencoes(props) {
 
+    const { navigation } = props
     const [loading, setLoaging] = useState(false);
     const [key, setKey] = useState("");
     const [manutencoes, setManutencoes] = useState([]);
@@ -62,6 +63,10 @@ export default function Manutencoes() {
             .catch(erro => setMensagem(erro))
     }
 
+    const back = () => {
+        navigation.navigate('Home')
+    }    
+
     useEffect(() => {
         getManutencoes();
     }, []);
@@ -110,6 +115,16 @@ export default function Manutencoes() {
                     />
                 </View>
             </View>
+            <View style={styles.box2}>
+                <View style={styles.botao}>
+                    <Button
+                        title="Voltar"
+                        color= "#8B7D39"
+                        onPress={back}
+                    />
+                </View>
+            </View>
+
             <View style={styles.box3}>
                 <ActivityIndicator animating={loading} size="small" color="#F3FF00" />
                 <FlatList

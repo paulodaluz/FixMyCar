@@ -3,8 +3,9 @@ import { ActivityIndicator, StyleSheet, View, Text, TextInput, Button, FlatList,
 import * as consumoService from '../service/consumosService'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
-export default function Consumos() {
+export default function Consumos(props) {
 
+    const { navigation } = props
     const [loading, setLoaging] = useState(false);
     const [key, setKey] = useState("");
     const [consumo, setConsumo] = useState([]);
@@ -68,6 +69,10 @@ export default function Consumos() {
             .catch(erro => setMensagem(erro))
     }
 
+    const back = () => {
+        navigation.navigate('Home')
+    }
+
     useEffect(() => {
         getConsumo()
     }, [])
@@ -119,7 +124,15 @@ export default function Consumos() {
                     />
                 </View>
             </View>
-
+            <View style={styles.box2}>
+                <View style={styles.botao}>
+                    <Button
+                        title="Voltar"
+                        color= "#8B7D39"
+                        onPress={back}
+                    />
+                </View>
+            </View>
             <View style={styles.box3}>
                 <ActivityIndicator animating={loading} size="small" color="#F3FF00" />
                 <FlatList

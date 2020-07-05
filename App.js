@@ -13,6 +13,7 @@ import Contatos from './src/pages/Contatos'
 import Manutencoes from './src/pages/Manutencoes'
 import Consumos from './src/pages/Consumos'
 import Sobre from './src/pages/Sobre'
+import MapaContatos from './src/pages/MapaContatos'
 
 //Desabilitano Warnings
 import { YellowBox } from 'react-native'
@@ -24,8 +25,6 @@ if (!global.btoa) {
 if (!global.atob) {
   global.atob = decode
 }
-
-
 
 function MenuSide({ navigation }) {
   const superior = navigation
@@ -40,6 +39,7 @@ function MenuSide({ navigation }) {
     >
       <Drawer.Screen name="Home" component={Home} initialParams={{ superior }} />
       <Drawer.Screen name="Contatos" component={Contatos} />
+      <Drawer.Screen name="Mapa Contatos" component={MapaContatos} />      
       <Drawer.Screen name="Manutenções" component={Manutencoes} />
       <Drawer.Screen name="Consumos" component={Consumos} />
       <Drawer.Screen name="Sobre" component={Sobre} />

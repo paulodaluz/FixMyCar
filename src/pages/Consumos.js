@@ -1,113 +1,112 @@
-import React, { useState, useEffect } from 'react'
-import {ActivityIndicator, StyleSheet, View, Text, TextInput, Button, FlatList, TouchableOpacity } from 'react-native'
-import { salvarConsumo, pegarConsumo, deletarConsumo } from '../service/consumosService';
+import React, {useState, useEffect} from 'react'
+import { ActivityIndicator, StyleSheet, View, Text, TextInput, Button, FlatList, TouchableOpacity } from 'react-native'
+import * as consumoService from '../service/consumosService'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
 export default function Consumos() {
-    const [loading, setLoaging] = useState(false)
-    const [key, setKey] = useState("")
-    const [contacts, setContacts] = useState([])    
+
+    const [loading, setLoaging] = useState(false);
+    const [key, setKey] = useState("");
+    const [consumo, setConsumo] = useState([]);
 
     const [dataAbastecimento, setDataAbastecimento] = useState("");
     const [km, setKm] = useState("");
     const [kmPercorrido, setKmPercorrido] = useState("");
     const [litros, setLitros] = useState("");
+    const [media, setMedia] = useState("");    
     const [mensagem, setMensagem] = useState("");
-    const [consumos, setConsumos] = useState([]);
 
     const clearImputs = () => {
-        setDataAbastecimento('')
-        setKm('')
-        setKmPercorrido('')
-        setLitros('')
-        setMensagem('')
+        setDataAbastecimento("")
+        setKm("")
+        setKmPercorrido("")
+        setLitros("")
+        setMedia("")
+        setLoaging(false)
+        getConsumo()
     }
 
-    const criarConsumo = async () => {
+    const saveConsumo = () => {        
         setLoaging(true)
+        //Testando se os campos estão preenchidos
         if (!dataAbastecimento || !km || !kmPercorrido || !litros) {
-            setMensagem("Campos Inválidos");
-        } else {
+            setMensagem("Campos Inválidos")
+        } else { 
             const consumo = {
-                dataAbastecimento,
-                km,
-                kmPercorrido,
-                litros
-            };
-
-            await salvarConsumo(consumo, '')
-                .then((res) => {
-                    setMensagem("Dados Inseridos com Sucesso!");
+                dataAbastecimento: dataAbastecimento,
+                km: km,
+                kmPercorrido: kmPercorrido,
+                litros: litros,
+                media: media
+            }
+            //Invocando a função para salvar o amigo
+            consumoService.salvarConsumo(consumo, key)                
+                .then(res => {
+                    setMensagem("Dados Inseridos com Sucesso!")
+                    //Após salvar limpa campos/variáveis
                     clearImputs()
                 })
-                .catch((err) => {
-                    setMensagem(err);
-                });
-
-            await pegarConsumo()
-                .then((res) => {
-                    setConsumos(res);
-                })
-                .catch((err) => {
-                    setMensagem(err);
-                });
+                .catch(erro => setMensagem(erro))
         }
     }
 
-    const getConsumos = async () => {
-        await pegarConsumo()
-            .then((retorno) => {
-                setConsumos(retorno);
-            })
-            .catch((erro) => console.log(erro));
-    };
+    const deleteConsumo = (consumo) => {
+        setLoaging(true)
+        consumoService.deletarConsumo(consumo)
+            .then(() => getConsumo())
+            .catch(erro => setMensagem(erro))
+        clearImputs()
+    }
 
-    const deleteConsumo = async (consumo) => {
-        await deletarConsumo(consumo)
+    const getConsumo = () => {
+        setLoaging(true)
+        consumoService.pegarConsumo()
+            .then(retorno => {
+                setConsumo(retorno)
+                setLoaging(false)
+            })
+            .catch(erro => setMensagem(erro))
     }
 
     useEffect(() => {
-        getConsumos();
-    }, []);
+        getConsumo()
+    }, [])
 
     return (
         <View style={styles.container}>
             <View style={styles.box1}>
                 <TextInput style={dataAbastecimento ? styles.caixaTexto : styles.caixaTextoError}
-                    placeholder='Data de Abastecimento'
-                    value={dataAbastecimento}
-                    onChangeText={texto => setDataAbastecimento(texto)}
-                />
+                        placeholder='Data de Abastecimento'
+                        value={dataAbastecimento}
+                        onChangeText={texto => setDataAbastecimento(texto)}
+                />                
                 <TextInput style={km ? styles.caixaTexto : styles.caixaTextoError}
-                    placeholder='KM'
-                    keyboardType='numeric'
-                    value={km}
-                    onChangeText={texto => setKm(texto)}
+                        placeholder='KM'
+                        value={km}
+                        onChangeText={texto => setKm(texto)}
                 />
                 <TextInput style={kmPercorrido ? styles.caixaTexto : styles.caixaTextoError}
-                    placeholder='KMs Percorrido'
-                    keyboardType='numeric'
-                    value={kmPercorrido}
-                    onChangeText={texto => setKmPercorrido(texto)}
+                        placeholder='KM Percorrido'
+                        value={kmPercorrido}
+                        onChangeText={texto => setKmPercorrido(texto)}
                 />
                 <TextInput style={litros ? styles.caixaTexto : styles.caixaTextoError}
-                    placeholder='Litros de Gasolina'
-                    value={litros}
-                    keyboardType='numeric'
-                    onChangeText={texto => setLitros(texto)}
+                        placeholder='Litros'
+                        value={litros}
+                        onChangeText={texto => setLitros(texto)}
                 />
-                <Text style={styles.mensagemErro}>{mensagem}</Text>
+                <TextInput style={media ? styles.caixaTexto : styles.caixaTextoError}
+                        placeholder='Média'
+                        value={media}
+                        onChangeText={texto => setMedia(texto)}
+                />                
             </View>
             <View style={styles.box2}>
                 <View style={styles.botao}>
                     <Button
                         title="Salvar"
-                        color="#8B7D39"
-                        onPress={() => {
-                            criarConsumo()
-                            clearImputs()
-                            getConsumos()
-                        }}
+                        color= "#8B7D39"
+                        onPress={saveConsumo}
                     />
                 </View>
             </View>
@@ -115,35 +114,47 @@ export default function Consumos() {
                 <View style={styles.botao}>
                     <Button
                         title="Limpar"
-                        color="#8B7D39"
+                        color= "#8B7D39"
                         onPress={clearImputs}
                     />
                 </View>
             </View>
+
             <View style={styles.box3}>
-                <ActivityIndicator animating={loading} size="small" color="#F3FF00"/>
+                <ActivityIndicator animating={loading} size="small" color="#F3FF00" />
                 <FlatList
-                    data={consumos}
-                    renderItem={({ item }) => (
+                    data={consumo}
+                    renderItem={({ item }) =>
                         <TouchableOpacity
                             onPress={() => {
-                                deleteConsumo(item)
-                                getConsumos()
+                                setDataAbastecimento(item.dataAbastecimento)
+                                setKm(item.km)
+                                setKmPercorrido(item.kmPercorrido)
+                                setLitros(item.litros)
+                                setMedia(item.media)
+                                setKey(item.key)
                             }}
                         >
-                            <View style={styles.box}>
-                                <View style={styles.boxCollum}>
-                                    <Text>Data de Abastecimento: {item.dataAbastecimento}</Text>
-                                    <Text>KM: {item.km}</Text>
-                                    <Text>KMs Percorridos: {item.kmPercorrido}</Text>
-                                    <Text>Litros: {item.litros}</Text>
+                            <View style={styles.getbox}>
+                                <View style={styles.collum}>
+                                    <Text>Dt.Abastecimento: {item.dataAbastecimento}</Text>
+                                    <Text>Odometro: {item.km}</Text>
+                                    <Text>Km Percorrido: {item.kmPercorrido} - Litros: {item.litros}</Text>
+                                    <Text>Média: {item.media}</Text>
                                 </View>
-                                <View style={styles.boxCollumAction}></View>
+                                <View>
+                                    <Text>
+                                        <Icon
+                                            onPress={() => deleteConsumo(item)}
+                                            name="trash"
+                                            size={40} color="red" />
+                                    </Text>
+                                </View>                                
                             </View>
                         </TouchableOpacity>
-                    )}
+                    }
                 />
-            </View>
+            </View>          
         </View>
     )
 }
@@ -159,7 +170,7 @@ const styles = StyleSheet.create({
     },
     box1: {
         width: "95%",
-        height: 175,
+        height: 215,
         margin: 5,
         alignItems: 'center'
     },
@@ -179,9 +190,9 @@ const styles = StyleSheet.create({
         width: "95%",        
         borderWidth: 1,
         borderRadius: 10,
-        borderColor: "#fff",
+        borderColor: '#fff',
         padding: 5,
-        marginTop: 5
+        marginTop: 5,
     },
     caixaTextoError: {
         width: "95%",
@@ -212,7 +223,5 @@ const styles = StyleSheet.create({
     },
     iconbox: {
         width: "20%"
-    }
+    }    
 })
-
-//<ActivityIndicator animating={loading} size="small" color="#F3FF00"/>

@@ -26,7 +26,6 @@ export default function Manutencoes() {
 
     const saveManutencao = () => {        
         setLoaging(true)
-        //Testando se os campos estão preenchidos
         if (!data || !descricao || !detalhamento || !valor) {
             setMensagem("Campos Inválidos")
         } else { 
@@ -36,11 +35,9 @@ export default function Manutencoes() {
                 detalhamento: detalhamento,
                 valor: valor
             }
-            //Invocando a função para salvar o amigo
             manutencaoService.salvarManutencao(manutencao, key)                
                 .then(res => {
                     setMensagem("Dados Inseridos com Sucesso!")
-                    //Após salvar limpa campos/variáveis
                     clearImputs()
                 })
                 .catch(erro => setMensagem(erro))

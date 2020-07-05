@@ -1,56 +1,19 @@
 import React, { useState, useEffect } from 'react'
-import { StyleSheet, View, Text, TextInput, Button, FlatList, TouchableOpacity } from 'react-native'
-import { salvarManutencao, pegarManutencao, deletarManutencao } from '../service/manutencoesService';
+import {ActivityIndicator, StyleSheet, View, Text, TextInput, Button, FlatList, TouchableOpacity } from 'react-native'
+import * as manutencaoService from '../service/manutencoesService'
+import Icon from 'react-native-vector-icons/FontAwesome'
 
 export default function Manutencoes() {
+
+    const [loading, setLoaging] = useState(false);
+    const [key, setKey] = useState("");
+    const [manutencoes, setManutencoes] = useState([]);
+
     const [descricao, setDescricao] = useState("");
     const [data, setData] = useState("");
     const [detalhamento, setDetalhamento] = useState("");
     const [valor, setValor] = useState("");
     const [mensagem, setMensagem] = useState("");
-    const [manutencoes, setManutencoes] = useState([]);
-
-    const criarManutencao = async () => {
-        clearImputs()
-        if (!data || !descricao || !detalhamento || !valor) {
-            setMensagem("Campos Inválidos");
-        } else {
-            const manutencao = {
-                descricao,
-                data,
-                detalhamento,
-                valor
-            };
-
-            await salvarManutencao(manutencao, '')
-                .then((res) => {
-                    setMensagem("Dados Inseridos com Sucesso!");
-                })
-                .catch((err) => {
-                    setMensagem(err);
-                });
-
-            await pegarManutencao()
-                .then((res) => {
-
-                })
-                .catch((err) => {
-                    setMensagem(err);
-                });
-        }
-    }
-
-    const getManutencoes = async () => {
-        await pegarManutencao()
-            .then((retorno) => {
-                setManutencoes(retorno);
-            })
-            .catch((erro) => console.log(erro));
-    };
-
-    const deleteManutencao = async (manutencao) => {
-        await deletarManutencao(manutencao)
-    }
 
     const clearImputs = () => {
         setValor('')
@@ -58,6 +21,48 @@ export default function Manutencoes() {
         setData('')
         setDescricao('')
         setMensagem('')
+        getManutencoes()
+    }
+
+    const saveManutencao = () => {        
+        setLoaging(true)
+        //Testando se os campos estão preenchidos
+        if (!data || !descricao || !detalhamento || !valor) {
+            setMensagem("Campos Inválidos")
+        } else { 
+            const manutencao = {
+                descricao: descricao,
+                data: data,
+                detalhamento: detalhamento,
+                valor: valor
+            }
+            //Invocando a função para salvar o amigo
+            manutencaoService.salvarManutencao(manutencao, key)                
+                .then(res => {
+                    setMensagem("Dados Inseridos com Sucesso!")
+                    //Após salvar limpa campos/variáveis
+                    clearImputs()
+                })
+                .catch(erro => setMensagem(erro))
+            }
+    }
+
+    const deleteManutencao = (manutencao) => {
+        setLoaging(true)
+        manutencaoService.deletarManutencao(manutencao)
+            .then(() => getManutencoes())
+            .catch(erro => setMensagem(erro))
+        clearImputs()
+    }    
+
+    const getManutencoes = () => {
+        setLoaging(true)
+        manutencaoService.pegarManutencao()
+            .then(retorno => {
+                setManutencoes(retorno)
+                setLoaging(false)
+            })
+            .catch(erro => setMensagem(erro))
     }
 
     useEffect(() => {
@@ -67,22 +72,22 @@ export default function Manutencoes() {
     return (
         <View style={styles.container}>
             <View style={styles.box1}>
-                <TextInput style={styles.caixaTexto}
+                <TextInput style={descricao ? styles.caixaTexto : styles.caixaTextoError}
                     placeholder='Descrição'
                     value={descricao}
                     onChangeText={texto => setDescricao(texto)}
                 />
-                <TextInput style={styles.caixaTexto}
+                <TextInput style={data ? styles.caixaTexto : styles.caixaTextoError}
                     placeholder='Data'
                     value={data}
                     onChangeText={texto => setData(texto)}
                 />
-                <TextInput style={styles.caixaTexto}
+                <TextInput style={detalhamento ? styles.caixaTexto : styles.caixaTextoError}
                     placeholder='Detalhamento'
                     value={detalhamento}
                     onChangeText={texto => setDetalhamento(texto)}
                 />
-                <TextInput style={styles.caixaTexto}
+                <TextInput style={valor ? styles.caixaTexto : styles.caixaTextoError}
                     placeholder='Valor em R$'
                     value={valor}
                     keyboardType='numeric'
@@ -94,12 +99,8 @@ export default function Manutencoes() {
                 <View style={styles.botao}>
                     <Button
                         title="Salvar"
-                        color="#fff"
-                        onPress={() => {
-                            criarManutencao()
-                            clearImputs()
-                            getManutencoes()
-                        }}
+                        color= "#8B7D39"
+                        onPress={() => {saveManutencao()}}
                     />
                 </View>
             </View>
@@ -107,31 +108,40 @@ export default function Manutencoes() {
                 <View style={styles.botao}>
                     <Button
                         title="Limpar"
-                        color="#fff"
+                        color= "#8B7D39"
                         onPress={clearImputs}
                     />
                 </View>
             </View>
-            <View>
+            <View style={styles.box3}>
+                <ActivityIndicator animating={loading} size="small" color="#F3FF00" />
                 <FlatList
                     data={manutencoes}
                     renderItem={({ item }) => (
                         <TouchableOpacity
                             onPress={() => {
-                                deleteManutencao(item)
-                                getManutencoes()
+                                setDescricao(item.descricao)
+                                setData(item.data)
+                                setDetalhamento(item.detalhamento)
+                                setValor(item.valor)
+                                setKey(item.key)
                             }}
                         >
-                            <View style={styles.box}>
-                                <View style={styles.boxCollum}>
-                                    <Text style={styles.boxTitle}>{item.name}</Text>
-                                    <Text>descricao: {item.descricao}</Text>
-                                    <Text>data: {item.data}</Text>
-                                    <Text>detalhamento: {item.detalhamento}</Text>
-                                    <Text>valor: {item.valor}</Text>
+                            <View style={styles.getbox}>
+                                <View style={styles.collum}>
+                                    <Text>{item.data} - {item.descricao}</Text>
+                                    <Text>{item.detalhamento}</Text>
+                                    <Text>R$ {item.valor}</Text>
                                 </View>
-                                <View style={styles.boxCollumAction}></View>
-                            </View>
+                                <View>
+                                    <Text>
+                                        <Icon
+                                            onPress={() => deleteManutencao(item)}
+                                            name="trash"
+                                            size={40} color="red" />
+                                    </Text>
+                                </View>                                
+                            </View>                            
                         </TouchableOpacity>
                     )}
                 />
@@ -147,12 +157,12 @@ const styles = StyleSheet.create({
         backgroundColor: '#8B7D39',
         alignItems: 'center',
         flexDirection: 'row',
-        flexWrap: 'wrap',
+        flexWrap: 'wrap',        
         justifyContent: 'center'
     },
     box1: {
         width: "95%",
-        height: 180,
+        height: 175,
         margin: 5,
         alignItems: 'center'
     },
@@ -169,46 +179,43 @@ const styles = StyleSheet.create({
         marginTop: 5
     },
     caixaTexto: {
-        width: "90%",
+        width: "95%",        
         borderWidth: 1,
         borderRadius: 10,
-        borderColor: '#fff',
-        //backgroundColor: '#fff',
+        borderColor: "#fff",
         padding: 5,
-        marginTop: 5,
-        //marginBottom: 5
+        marginTop: 5
+    },
+    caixaTextoError: {
+        width: "95%",
+        borderWidth: 1,
+        borderRadius: 10,
+        borderColor: "#FF0017",
+        padding: 5,
+        marginTop: 5
     },
     botao: {
         borderRadius: 10,
         borderWidth: 1,
-        borderColor: '#fff',
+        borderColor: '#fff', 
         width: "80%",
         padding: 5,
+        marginTop: 5
+    },
+    getbox: {
+        flexDirection: 'row',
+        padding: 5,
         marginTop: 5,
-        paddingTop: 0
-    },
-    mensagemErro: {
-        marginTop: 10,
-        color: "red",
-    },
-    box: {
-        backgroundColor: '#fff',
-        flexDirection: "row",
-        width: "95%",
         borderWidth: 1,
-        borderRadius: 10,
-        borderColor: "gray",
-        padding: 10,
-        marginTop: 10,
+        borderRadius: 5,
+        borderColor: '#fff'
     },
-    boxCollum: {
-        width: "80%",
+    collum: {
+        width: "90%"
     },
-    boxCollumAction: {
-        width: "20%",
-    },
-    boxTitle: {
-        fontWeight: "bold",
-        color: "blue",
-    },
+    iconbox: {
+        width: "20%"
+    }
 })
+//<Text style={styles.boxTitle}>{item.name}</Text>
+//<View style={styles.boxCollumAction}></View>

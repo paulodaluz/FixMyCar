@@ -6,17 +6,18 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 
 export default function Contatos() {
 
-    const [loading, setLoaging] = useState(false)
-    const [key, setKey] = useState("")
-    const [nome, setNome] = useState("")
-    const [telefone, setTelefone] = useState("")
-    const [email, setEmail] = useState("")
-    const [endereco, setEndereco] = useState("")    
-    const [tipo, setTipo] = useState("")
-    const [longitude,setLongitude] = useState("")
-    const [latitude, setLatitude] = useState("")
-    const [mensagem, setMensagem] = useState("")    
-    const [contacts, setContacts] = useState([])
+    const [loading, setLoaging] = useState(false);
+    const [key, setKey] = useState("");
+    const [contacts, setContacts] = useState([]);
+
+    const [nome, setNome] = useState("");
+    const [telefone, setTelefone] = useState("");
+    const [email, setEmail] = useState("");
+    const [endereco, setEndereco] = useState("");    
+    const [tipo, setTipo] = useState("");
+    const [longitude,setLongitude] = useState("");
+    const [latitude, setLatitude] = useState("");
+    const [mensagem, setMensagem] = useState("");    
 
     const clearImputs = () => {
         setNome("")
@@ -31,7 +32,7 @@ export default function Contatos() {
     }
 
     const saveContact = () => {        
-        //setLoaging(true)
+        setLoaging(true)
         //Testando se os campos estão preenchidos
         if (!nome || !telefone || !email || !endereco || !tipo) {
             setMensagem("Campos Inválidos")
@@ -168,8 +169,7 @@ export default function Contatos() {
                         </TouchableOpacity>
                     }
                 />
-            </View>
-          
+            </View>          
         </View>
     )
 }

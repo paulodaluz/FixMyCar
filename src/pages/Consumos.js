@@ -1,8 +1,13 @@
 import React, { useState, useEffect } from 'react'
-import { StyleSheet, View, Text, TextInput, Button, FlatList, TouchableOpacity } from 'react-native'
+import {ActivityIndicator, StyleSheet, View, Text, TextInput, Button, FlatList, TouchableOpacity } from 'react-native'
 import { salvarConsumo, pegarConsumo, deletarConsumo } from '../service/consumosService';
+import Icon from 'react-native-vector-icons/FontAwesome'
 
 export default function Consumos() {
+    const [loading, setLoaging] = useState(false)
+    const [key, setKey] = useState("")
+    const [contacts, setContacts] = useState([])    
+
     const [dataAbastecimento, setDataAbastecimento] = useState("");
     const [km, setKm] = useState("");
     const [kmPercorrido, setKmPercorrido] = useState("");
@@ -10,8 +15,16 @@ export default function Consumos() {
     const [mensagem, setMensagem] = useState("");
     const [consumos, setConsumos] = useState([]);
 
+    const clearImputs = () => {
+        setDataAbastecimento('')
+        setKm('')
+        setKmPercorrido('')
+        setLitros('')
+        setMensagem('')
+    }
+
     const criarConsumo = async () => {
-        clearImputs()
+        setLoaging(true)
         if (!dataAbastecimento || !km || !kmPercorrido || !litros) {
             setMensagem("Campos Inválidos");
         } else {
@@ -25,6 +38,7 @@ export default function Consumos() {
             await salvarConsumo(consumo, '')
                 .then((res) => {
                     setMensagem("Dados Inseridos com Sucesso!");
+                    clearImputs()
                 })
                 .catch((err) => {
                     setMensagem(err);
@@ -52,14 +66,6 @@ export default function Consumos() {
         await deletarConsumo(consumo)
     }
 
-    const clearImputs = () => {
-        setDataAbastecimento('')
-        setKm('')
-        setKmPercorrido('')
-        setLitros('')
-        setMensagem('')
-    }
-
     useEffect(() => {
         getConsumos();
     }, []);
@@ -67,24 +73,24 @@ export default function Consumos() {
     return (
         <View style={styles.container}>
             <View style={styles.box1}>
-                <TextInput style={styles.caixaTexto}
+                <TextInput style={dataAbastecimento ? styles.caixaTexto : styles.caixaTextoError}
                     placeholder='Data de Abastecimento'
                     value={dataAbastecimento}
                     onChangeText={texto => setDataAbastecimento(texto)}
                 />
-                <TextInput style={styles.caixaTexto}
+                <TextInput style={km ? styles.caixaTexto : styles.caixaTextoError}
                     placeholder='KM'
                     keyboardType='numeric'
                     value={km}
                     onChangeText={texto => setKm(texto)}
                 />
-                <TextInput style={styles.caixaTexto}
+                <TextInput style={kmPercorrido ? styles.caixaTexto : styles.caixaTextoError}
                     placeholder='KMs Percorrido'
                     keyboardType='numeric'
                     value={kmPercorrido}
                     onChangeText={texto => setKmPercorrido(texto)}
                 />
-                <TextInput style={styles.caixaTexto}
+                <TextInput style={litros ? styles.caixaTexto : styles.caixaTextoError}
                     placeholder='Litros de Gasolina'
                     value={litros}
                     keyboardType='numeric'
@@ -115,6 +121,7 @@ export default function Consumos() {
                 </View>
             </View>
             <View style={styles.box3}>
+                <ActivityIndicator animating={loading} size="small" color="#F3FF00"/>
                 <FlatList
                     data={consumos}
                     renderItem={({ item }) => (
@@ -152,7 +159,7 @@ const styles = StyleSheet.create({
     },
     box1: {
         width: "95%",
-        height: 215,
+        height: 175,
         margin: 5,
         alignItems: 'center'
     },
@@ -169,14 +176,20 @@ const styles = StyleSheet.create({
         marginTop: 5
     },
     caixaTexto: {
-        width: "90%",        
+        width: "95%",        
         borderWidth: 1,
         borderRadius: 10,
-        borderColor: '#fff',
-        //backgroundColor: '#fff',
+        borderColor: "#fff",
         padding: 5,
-        marginTop: 5,
-        //marginBottom: 5
+        marginTop: 5
+    },
+    caixaTextoError: {
+        width: "95%",
+        borderWidth: 1,
+        borderRadius: 10,
+        borderColor: "#FF0017",
+        padding: 5,
+        marginTop: 5
     },
     botao: {
         borderRadius: 10,
@@ -186,28 +199,20 @@ const styles = StyleSheet.create({
         padding: 5,
         marginTop: 5
     },
-    mensagemErro: {
-        marginTop: 10,
-        color: "red",
-    },
-    box: {
-        backgroundColor: '#fff',
-        flexDirection: "row",
-        width: "95%",
+    getbox: {
+        flexDirection: 'row',
+        padding: 5,
+        marginTop: 5,
         borderWidth: 1,
-        borderRadius: 10,
-        borderColor: "gray",
-        padding: 10,
-        marginTop: 10,
+        borderRadius: 5,
+        borderColor: '#fff',
     },
-    boxCollum: {
-        width: "80%",
+    collum: {
+        width: "90%"
     },
-    boxCollumAction: {
-        width: "20%",
-    },
-    boxTitle: {
-        fontWeight: "bold",
-        color: "blue",
-    },
+    iconbox: {
+        width: "20%"
+    }
 })
+
+//<ActivityIndicator animating={loading} size="small" color="#F3FF00"/>

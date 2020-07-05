@@ -16,8 +16,8 @@ export default function Contatos() {
     const [endereco, setEndereco] = useState("");    
     const [tipo, setTipo] = useState("");
     const [longitude,setLongitude] = useState("");
-    const [latitude, setLatitude] = useState("");
-    const [mensagem, setMensagem] = useState("");    
+    const [latitude, setLatitude] = useState('');
+    const [mensagem, setMensagem] = useState('');    
 
     const clearImputs = () => {
         setNome("")
@@ -198,7 +198,7 @@ const styles = StyleSheet.create({
     },
     box3: {
         width: "95%",
-        height: 280,
+        height: 230,
         marginTop: 5
     },
     caixaTexto: {

@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { StyleSheet, Button, View, Dimensions, Alert } from 'react-native'
 import * as contatosService from '../service/contatosService'
-import MapView, { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
+import MapView, { Marker } from 'react-native-maps';
+
 //import orangeMarkerImg from '../img/blueMarker.png'
 
 export default function MapaContatos() {
@@ -49,15 +50,19 @@ export default function MapaContatos() {
                 initialRegion={localicaoAtual}
                 region={localicaoAtual}
             >
+                {localizacoes.map((item, key) => <Marker
+                        key={key}
+                        coordinate={item}
+                        title={item.nome}
+                   />)
+                }
+
                 {myPosition ? <Marker
                     coordinate={myPosition}
                     title={"Onde eu estou!"}
                     //image={orangeMarkerImg}
                 />
                     : null}
-
-
-
             </MapView>
         </View>    )
 }

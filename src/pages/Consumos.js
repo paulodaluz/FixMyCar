@@ -14,7 +14,7 @@ export default function Consumos(props) {
     const [km, setKm] = useState("");
     const [kmPercorrido, setKmPercorrido] = useState("");
     const [litros, setLitros] = useState("");
-    const [media, setMedia] = useState("");    
+    const [media, setMedia] = useState();    
     const [mensagem, setMensagem] = useState("");
 
     const clearImputs = () => {
@@ -29,7 +29,6 @@ export default function Consumos(props) {
 
     const saveConsumo = () => {        
         setLoaging(true)
-        //Testando se os campos estão preenchidos
         if (!dataAbastecimento || !km || !kmPercorrido || !litros) {
             setMensagem("Campos Inválidos")
         } else { 
@@ -40,11 +39,9 @@ export default function Consumos(props) {
                 litros: litros,
                 media: media
             }
-            //Invocando a função para salvar o amigo
             consumoService.salvarConsumo(consumo, key)                
                 .then(res => {
                     setMensagem("Dados Inseridos com Sucesso!")
-                    //Após salvar limpa campos/variáveis
                     clearImputs()
                 })
                 .catch(erro => setMensagem(erro))
@@ -71,6 +68,32 @@ export default function Consumos(props) {
 
     const back = () => {
         navigation.navigate('Home')
+    }
+
+    const calcConsumo = () => {
+
+        var resultado = Math.trunc(kmPercorrido / litros)
+        
+        if(resultado > 12){
+            classific = "A"
+        } else 
+        if (resultado > 10 & resultado <= 12){
+            classific = "B"
+        } else 
+        if (resultado > 8 & resultado <= 10){
+            classific = "C"
+        } else 
+        if (resultado >4 & resultado <= 8){
+            classific = "D"
+        } else 
+        if (resultado >= 0 & resultado <= 4){
+            classific = "E"
+        } else {
+            classific= "Sem Classifcação",
+            resultado = "0"
+        }
+        setMedia(resultado)
+        //navigation.navigate("Calconsumo",{resultado, classific})
     }
 
     useEffect(() => {
@@ -100,18 +123,17 @@ export default function Consumos(props) {
                         value={litros}
                         onChangeText={texto => setLitros(texto)}
                 />
-                <TextInput style={media ? styles.caixaTexto : styles.caixaTextoError}
-                        placeholder='Média'
-                        value={media}
-                        onChangeText={texto => setMedia(texto)}
-                />                
             </View>
             <View style={styles.box2}>
                 <View style={styles.botao}>
                     <Button
                         title="Salvar"
                         color= "#8B7D39"
-                        onPress={saveConsumo}
+                        //onPress={calcConsumo,saveConsumo}
+                        onPress={() => {
+                            calcConsumo()
+                            saveConsumo()
+                        }}                        
                     />
                 </View>
             </View>
@@ -196,7 +218,7 @@ const styles = StyleSheet.create({
     },
     box3: {
         width: "95%",
-        height: 280,
+        height: 230,
         marginTop: 5
     },
     caixaTexto: {

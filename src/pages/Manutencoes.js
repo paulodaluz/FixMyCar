@@ -187,7 +187,7 @@ const styles = StyleSheet.create({
     },
     box3: {
         width: "95%",
-        height: 280,
+        height: 230,
         marginTop: 5
     },
     caixaTexto: {

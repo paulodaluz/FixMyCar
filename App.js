@@ -12,6 +12,7 @@ import Home from './src/pages/Home'
 import Contatos from './src/pages/Contatos'
 import Manutencoes from './src/pages/Manutencoes'
 import Consumos from './src/pages/Consumos'
+import Calconsumo from './src/pages/Calconsumo'
 import Sobre from './src/pages/Sobre'
 import MapaContatos from './src/pages/MapaContatos'
 
@@ -41,7 +42,7 @@ function MenuSide({ navigation }) {
       <Drawer.Screen name="Contatos" component={Contatos} />
       <Drawer.Screen name="Mapa Contatos" component={MapaContatos} />      
       <Drawer.Screen name="Manutenções" component={Manutencoes} />
-      <Drawer.Screen name="Consumos" component={Consumos} />
+      <Drawer.Screen name="Consumos" component={Consumos} />      
       <Drawer.Screen name="Sobre" component={Sobre} />
       <Drawer.Screen name="Logoff" component={Login} initialParams={{ superior, funcao: 'logout' }} />
     </Drawer.Navigator>

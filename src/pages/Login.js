@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react'
 import { ActivityIndicator, StyleSheet, Text, TextInput, View, ImageBackground, Button } from 'react-native'
+import { CheckBox } from "react-native-elements"
+import storage from "../service/asyncStorage"
 import * as authService from '../service/authService'
 
 export default function Login(props) {
 
     const [mensagem, setMensagem] = useState("")
-    const [email, setEmail] = useState('teste123@email.com')
-    const [password, setPasswrd] = useState('teste123')
+    const [email, setEmail] = useState("")
+    const [password, setPasswrd] = useState("")
     const [loading, setLoaging] = useState(false)
+    const [checked, setChecked] = useState(false);
     const { navigation } = props
     const { route } = props
     const superior = route.params ? route.params.superior : ""
@@ -46,6 +49,26 @@ export default function Login(props) {
 
     }
 
+    const onCheck = async () => {
+        if (!checked && email && password) {
+            await storage.saveStorage("@login", email);
+            await storage.saveStorage("@senha", password);
+        } else {
+            await storage.removeStorage("@login");
+            await storage.removeStorage("@senha");
+        }
+        setChecked(!checked);
+    };
+
+    const getLogin = async () => {
+        const login = await storage.loadStorage("@login");
+        const senha = await storage.loadStorage("@senha");
+
+        setEmail(login || "");
+        setPasswrd(senha || "");
+        setChecked(!!(login && senha));
+    }
+
     useEffect(() => {
         if (route.params) {
             if (route.params.funcao == "logout") {
@@ -53,6 +76,10 @@ export default function Login(props) {
             }
         }
     }, [route.params])
+
+    useEffect(() => {
+        getLogin();
+    }, []);
 
     return (
         <ImageBackground
@@ -88,6 +115,16 @@ export default function Login(props) {
                         title="Register"
                         color="#8B7D39"
                         onPress={registrarLogin}
+                    />
+                </View>
+                <View style={{ padding: 15 }}>
+                    <CheckBox
+                        center
+                        title="Manter-me logado"
+                        checkedIcon="dot-circle-o"
+                        uncheckedIcon="circle-o"
+                        checked={checked}
+                        onPress={onCheck}
                     />
                 </View>
             </View>

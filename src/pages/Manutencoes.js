@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react'
-import {ActivityIndicator, StyleSheet, View, Text, TextInput, Button, FlatList, TouchableOpacity } from 'react-native'
+import React, { useState, useEffect, useLayoutEffect } from 'react'
+import { ActivityIndicator, StyleSheet, View, Text, TextInput, Button, FlatList, TouchableOpacity } from 'react-native'
 import * as manutencaoService from '../service/manutencoesService'
 import Icon from 'react-native-vector-icons/FontAwesome'
+import { Entypo } from '@expo/vector-icons'
 
 export default function Manutencoes(props) {
 
@@ -25,24 +26,41 @@ export default function Manutencoes(props) {
         getManutencoes()
     }
 
-    const saveManutencao = () => {        
+    const superior = props.route.params.superior
+
+    useLayoutEffect(() => {
+        superior.setOptions({
+            title: 'Manutenções',
+            headerLeft: () => (
+                <Entypo
+                    name="menu"
+                    size={24}
+                    color="black"
+                    onPress={() => navigation.openDrawer()}
+                    style={{ marginLeft: 20 }}
+                />
+            ),
+        });
+    }, []);
+
+    const saveManutencao = () => {
         setLoaging(true)
         if (!data || !descricao || !detalhamento || !valor) {
             setMensagem("Campos Inválidos")
-        } else { 
+        } else {
             const manutencao = {
                 descricao: descricao,
                 data: data,
                 detalhamento: detalhamento,
                 valor: valor
             }
-            manutencaoService.salvarManutencao(manutencao, key)                
+            manutencaoService.salvarManutencao(manutencao, key)
                 .then(res => {
                     setMensagem("Dados Inseridos com Sucesso!")
                     clearImputs()
                 })
                 .catch(erro => setMensagem(erro))
-            }
+        }
     }
 
     const deleteManutencao = (manutencao) => {
@@ -51,7 +69,7 @@ export default function Manutencoes(props) {
             .then(() => getManutencoes())
             .catch(erro => setMensagem(erro))
         clearImputs()
-    }    
+    }
 
     const getManutencoes = () => {
         setLoaging(true)
@@ -65,7 +83,7 @@ export default function Manutencoes(props) {
 
     const back = () => {
         navigation.navigate('Home')
-    }    
+    }
 
     useEffect(() => {
         getManutencoes();
@@ -101,8 +119,8 @@ export default function Manutencoes(props) {
                 <View style={styles.botao}>
                     <Button
                         title="Salvar"
-                        color= "#8B7D39"
-                        onPress={() => {saveManutencao()}}
+                        color="#8B7D39"
+                        onPress={() => { saveManutencao() }}
                     />
                 </View>
             </View>
@@ -110,7 +128,7 @@ export default function Manutencoes(props) {
                 <View style={styles.botao}>
                     <Button
                         title="Limpar"
-                        color= "#8B7D39"
+                        color="#8B7D39"
                         onPress={clearImputs}
                     />
                 </View>
@@ -119,7 +137,7 @@ export default function Manutencoes(props) {
                 <View style={styles.botao}>
                     <Button
                         title="Voltar"
-                        color= "#8B7D39"
+                        color="#8B7D39"
                         onPress={back}
                     />
                 </View>
@@ -152,8 +170,8 @@ export default function Manutencoes(props) {
                                             name="trash"
                                             size={40} color="red" />
                                     </Text>
-                                </View>                                
-                            </View>                            
+                                </View>
+                            </View>
                         </TouchableOpacity>
                     )}
                 />
@@ -169,7 +187,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#8B7D39',
         alignItems: 'center',
         flexDirection: 'row',
-        flexWrap: 'wrap',        
+        flexWrap: 'wrap',
         justifyContent: 'center'
     },
     box1: {
@@ -191,7 +209,7 @@ const styles = StyleSheet.create({
         marginTop: 5
     },
     caixaTexto: {
-        width: "95%",        
+        width: "95%",
         borderWidth: 1,
         borderRadius: 10,
         borderColor: "#fff",
@@ -209,7 +227,7 @@ const styles = StyleSheet.create({
     botao: {
         borderRadius: 10,
         borderWidth: 1,
-        borderColor: '#fff', 
+        borderColor: '#fff',
         width: "80%",
         padding: 5,
         marginTop: 5

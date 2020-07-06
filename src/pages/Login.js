@@ -5,8 +5,8 @@ import * as authService from '../service/authService'
 export default function Login(props) {
 
     const [mensagem, setMensagem] = useState("")
-    const [email, setEmail] = useState()
-    const [password, setPasswrd] = useState()
+    const [email, setEmail] = useState('teste123@email.com')
+    const [password, setPasswrd] = useState('teste123')
     const [loading, setLoaging] = useState(false)
     const { navigation } = props
     const { route } = props

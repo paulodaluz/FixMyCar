@@ -1,8 +1,28 @@
-import React from 'react'
+import React, { useLayoutEffect } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 const { expo } = require('../../app.json');
+import { Entypo } from '@expo/vector-icons'
 
-export default function Sobre() {
+export default function Sobre(props) {
+
+    const { navigation } = props
+
+    const superior = props.route.params.superior
+    useLayoutEffect(() => {
+        superior.setOptions({
+            title: 'Sobre',
+            headerLeft: () => (
+                <Entypo
+                    name="menu"
+                    size={24}
+                    color="black"
+                    onPress={() => navigation.openDrawer()}
+                    style={{ marginLeft: 20 }}
+                />
+            ),
+        });
+    }, []);
+
     return (
         <View style={styles.container}>
             <Text>Nome: {expo.name}</Text>

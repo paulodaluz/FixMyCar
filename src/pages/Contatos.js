@@ -1,8 +1,9 @@
-import React, {useState, useEffect, useLayoutEffect} from 'react'
+import React, { useState, useEffect, useLayoutEffect } from 'react'
 import { ActivityIndicator, StyleSheet, View, Text, TextInput, Button, FlatList, TouchableOpacity } from 'react-native'
 import * as contatosService from '../service/contatosService'
 import * as Location from 'expo-location'
 import Icon from 'react-native-vector-icons/FontAwesome'
+import { Entypo } from '@expo/vector-icons'
 
 export default function Contatos(props) {
 
@@ -14,9 +15,9 @@ export default function Contatos(props) {
     const [nome, setNome] = useState("");
     const [telefone, setTelefone] = useState("");
     const [email, setEmail] = useState("");
-    const [endereco, setEndereco] = useState("");    
+    const [endereco, setEndereco] = useState("");
     const [tipo, setTipo] = useState("");
-    const [longitude,setLongitude] = useState("");
+    const [longitude, setLongitude] = useState("");
     const [latitude, setLatitude] = useState('');
     const [mensagem, setMensagem] = useState('');
 
@@ -25,19 +26,35 @@ export default function Contatos(props) {
         setTelefone("")
         setEmail("")
         setEndereco("")
-        setTipo("")        
+        setTipo("")
         setLongitude("")
         setLatitude("")
         setLoaging(false)
         getContacts()
     }
+    const superior = props.route.params.superior
 
-    const saveContact = () => {        
+    useLayoutEffect(() => {
+        superior.setOptions({
+            title: 'Contatos',
+            headerLeft: () => (
+                <Entypo
+                    name="menu"
+                    size={24}
+                    color="black"
+                    onPress={() => navigation.openDrawer()}
+                    style={{ marginLeft: 20 }}
+                />
+            ),
+        });
+    }, []);
+
+    const saveContact = () => {
         setLoaging(true)
         //Testando se os campos estão preenchidos
         if (!nome || !telefone || !email || !endereco || !tipo) {
             setMensagem("Campos Inválidos")
-        } else { 
+        } else {
             const contato = {
                 nome: nome,
                 telefone: telefone,
@@ -48,7 +65,7 @@ export default function Contatos(props) {
                 longitude: longitude,
             }
             //Invocando a função para salvar o amigo
-            contatosService.salvarContato(contato, key)                
+            contatosService.salvarContato(contato, key)
                 .then(res => {
                     setMensagem("Dados Inseridos com Sucesso!")
                     //Após salvar limpa campos/variáveis
@@ -78,17 +95,17 @@ export default function Contatos(props) {
 
     const pesquisaLatLong = async (local) => {
         let posicao = await Location.geocodeAsync(local)
-          .then(resultado => {
-            setLatitude(resultado[0].latitude)            
-            setLongitude(resultado[0].longitude)
-          })
-          .catch(erro => console.log(erro))              
-    }     
+            .then(resultado => {
+                setLatitude(resultado[0].latitude)
+                setLongitude(resultado[0].longitude)
+            })
+            .catch(erro => console.log(erro))
+    }
 
     const back = () => {
         navigation.navigate('Home')
     }
-    
+
     useEffect(() => {
         clearImputs()
         //getContacts()
@@ -98,36 +115,36 @@ export default function Contatos(props) {
         <View style={styles.container}>
             <View style={styles.box1}>
                 <TextInput style={nome ? styles.caixaTexto : styles.caixaTextoError}
-                        placeholder='Nome'
-                        value={nome}
-                        onChangeText={texto => setNome(texto)}
-                />                
+                    placeholder='Nome'
+                    value={nome}
+                    onChangeText={texto => setNome(texto)}
+                />
                 <TextInput style={telefone ? styles.caixaTexto : styles.caixaTextoError}
-                        placeholder='Telefone'
-                        value={telefone}
-                        onChangeText={texto => setTelefone(texto)}
+                    placeholder='Telefone'
+                    value={telefone}
+                    onChangeText={texto => setTelefone(texto)}
                 />
                 <TextInput style={email ? styles.caixaTexto : styles.caixaTextoError}
-                        placeholder='e-mail'
-                        value={email}
-                        onChangeText={texto => setEmail(texto)}
+                    placeholder='e-mail'
+                    value={email}
+                    onChangeText={texto => setEmail(texto)}
                 />
                 <TextInput style={endereco ? styles.caixaTexto : styles.caixaTextoError}
-                        placeholder='Endereço'
-                        value={endereco}
-                        onChangeText={texto => setEndereco(texto)}
+                    placeholder='Endereço'
+                    value={endereco}
+                    onChangeText={texto => setEndereco(texto)}
                 />
                 <TextInput style={tipo ? styles.caixaTexto : styles.caixaTextoError}
-                        placeholder='Tipo'
-                        value={tipo}
-                        onChangeText={texto => setTipo(texto)}
-                />                
+                    placeholder='Tipo'
+                    value={tipo}
+                    onChangeText={texto => setTipo(texto)}
+                />
             </View>
             <View style={styles.box2}>
                 <View style={styles.botao}>
                     <Button
                         title="Salvar"
-                        color= "#8B7D39"
+                        color="#8B7D39"
                         onPress={pesquisaLatLong(endereco), saveContact}
                     />
                 </View>
@@ -136,7 +153,7 @@ export default function Contatos(props) {
                 <View style={styles.botao}>
                     <Button
                         title="Limpar"
-                        color= "#8B7D39"
+                        color="#8B7D39"
                         onPress={clearImputs}
                     />
                 </View>
@@ -145,11 +162,11 @@ export default function Contatos(props) {
                 <View style={styles.botao}>
                     <Button
                         title="Voltar"
-                        color= "#8B7D39"
+                        color="#8B7D39"
                         onPress={back}
                     />
                 </View>
-            </View>            
+            </View>
             <View style={styles.box3}>
                 <ActivityIndicator animating={loading} size="small" color="#F3FF00" />
                 <FlatList
@@ -178,12 +195,12 @@ export default function Contatos(props) {
                                             name="trash"
                                             size={40} color="red" />
                                     </Text>
-                                </View>                                
+                                </View>
                             </View>
                         </TouchableOpacity>
                     }
                 />
-            </View>          
+            </View>
         </View>
     )
 }
@@ -194,7 +211,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#8B7D39',
         alignItems: 'center',
         flexDirection: 'row',
-        flexWrap: 'wrap',        
+        flexWrap: 'wrap',
         justifyContent: 'center'
     },
     box1: {
@@ -216,7 +233,7 @@ const styles = StyleSheet.create({
         marginTop: 5
     },
     caixaTexto: {
-        width: "95%",        
+        width: "95%",
         borderWidth: 1,
         borderRadius: 10,
         borderColor: '#fff',
@@ -234,7 +251,7 @@ const styles = StyleSheet.create({
     botao: {
         borderRadius: 10,
         borderWidth: 1,
-        borderColor: '#fff', 
+        borderColor: '#fff',
         width: "80%",
         padding: 5,
         marginTop: 5
@@ -252,5 +269,5 @@ const styles = StyleSheet.create({
     },
     iconbox: {
         width: "20%"
-    }    
+    }
 })

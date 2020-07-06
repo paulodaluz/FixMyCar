@@ -39,11 +39,11 @@ function MenuSide({ navigation }) {
       }}
     >
       <Drawer.Screen name="Home" component={Home} initialParams={{ superior }} />
-      <Drawer.Screen name="Contatos" component={Contatos} />
-      <Drawer.Screen name="Mapa Contatos" component={MapaContatos} />      
-      <Drawer.Screen name="Manutenções" component={Manutencoes} />
-      <Drawer.Screen name="Consumos" component={Consumos} />      
-      <Drawer.Screen name="Sobre" component={Sobre} />
+      <Drawer.Screen name="Contatos" component={Contatos} initialParams={{ superior }} />
+      <Drawer.Screen name="Mapa Contatos" component={MapaContatos} />
+      <Drawer.Screen name="Manutenções" component={Manutencoes} initialParams={{ superior }} />
+      <Drawer.Screen name="Consumos" component={Consumos} initialParams={{ superior }} />
+      <Drawer.Screen name="Sobre" component={Sobre} initialParams={{ superior }} />
       <Drawer.Screen name="Logoff" component={Login} initialParams={{ superior, funcao: 'logout' }} />
     </Drawer.Navigator>
   )

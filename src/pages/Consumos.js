@@ -15,8 +15,10 @@ export default function Consumos(props) {
     const [km, setKm] = useState("");
     const [kmPercorrido, setKmPercorrido] = useState("");
     const [litros, setLitros] = useState("");
-    const [media, setMedia] = useState();
+    const [media, setMedia] = useState('0');
     const [mensagem, setMensagem] = useState("");
+    //const [resultado, setResultado] = useState("");
+    //const [classific, setClassific] = useState("");    
 
     const clearImputs = () => {
         setDataAbastecimento("")
@@ -88,8 +90,13 @@ export default function Consumos(props) {
         navigation.navigate('Home')
     }
 
-    const calcConsumo = () => {
+    const calConsumo = () => {
+        navigation.navigate('Calconsumo')
+    }
+    
 
+    const calcConsumo = () => {
+        var classific
         var resultado = Math.trunc(kmPercorrido / litros)
 
         if (resultado > 12) {
@@ -111,7 +118,7 @@ export default function Consumos(props) {
                                 resultado = "0"
                         }
         setMedia(resultado)
-        //navigation.navigate("Calconsumo",{resultado, classific})
+        navigation.navigate("Calconsumo",{resultado, classific})
     }
 
     useEffect(() => {
@@ -146,7 +153,7 @@ export default function Consumos(props) {
                 <View style={styles.botao}>
                     <Button
                         title="Salvar"
-                        color="#8B7D39"
+                        color="#5C5C5B"
                         //onPress={calcConsumo,saveConsumo}
                         onPress={() => {
                             calcConsumo()
@@ -159,7 +166,7 @@ export default function Consumos(props) {
                 <View style={styles.botao}>
                     <Button
                         title="Limpar"
-                        color="#8B7D39"
+                        color="#5C5C5B"
                         onPress={clearImputs}
                     />
                 </View>
@@ -168,7 +175,7 @@ export default function Consumos(props) {
                 <View style={styles.botao}>
                     <Button
                         title="Voltar"
-                        color="#8B7D39"
+                        color="#5C5C5B"
                         onPress={back}
                     />
                 </View>
@@ -215,7 +222,7 @@ export default function Consumos(props) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#8B7D39',
+        backgroundColor: '#B5B3B2',
         alignItems: 'center',
         flexDirection: 'row',
         flexWrap: 'wrap',
@@ -223,7 +230,7 @@ const styles = StyleSheet.create({
     },
     box1: {
         width: "95%",
-        height: 215,
+        height: 180,
         margin: 5,
         alignItems: 'center'
     },
@@ -236,7 +243,7 @@ const styles = StyleSheet.create({
     },
     box3: {
         width: "95%",
-        height: 230,
+        height: 240,
         marginTop: 5
     },
     caixaTexto: {

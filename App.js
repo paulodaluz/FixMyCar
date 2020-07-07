@@ -13,8 +13,12 @@ import Contatos from './src/pages/Contatos'
 import Manutencoes from './src/pages/Manutencoes'
 import Consumos from './src/pages/Consumos'
 import Calconsumo from './src/pages/Calconsumo'
-import Sobre from './src/pages/Sobre'
 import MapaContatos from './src/pages/MapaContatos'
+
+import Sobre from './src/pages/Sobre'
+import Arquitetura from './src/pages/Arquitetura'
+import Tecnologia from './src/pages/Tecnologia'
+import Faq from './src/pages/Faq'
 
 //Desabilitano Warnings
 import { YellowBox } from 'react-native'
@@ -44,6 +48,9 @@ function MenuSide({ navigation }) {
       <Drawer.Screen name="Manutenções" component={Manutencoes} initialParams={{ superior }} />
       <Drawer.Screen name="Consumos" component={Consumos} initialParams={{ superior }} />
       <Drawer.Screen name="Sobre" component={Sobre} initialParams={{ superior }} />
+      <Drawer.Screen name="FAQ" component={Faq} initialParams={{ superior }} />      
+      <Drawer.Screen name="Arquitetura" component={Arquitetura} initialParams={{ superior }} />
+      <Drawer.Screen name="Tecnologia" component={Tecnologia} initialParams={{ superior }} />      
       <Drawer.Screen name="Logoff" component={Login} initialParams={{ superior, funcao: 'logout' }} />
     </Drawer.Navigator>
   )
@@ -60,6 +67,13 @@ export default function App() {
             headerTitleAlign: "center"
           }}
         />
+        <Stack.Screen name="Contatos"
+          component={Contatos}
+        />
+        <Stack.Screen name="Calconsumo"
+          component={Calconsumo}
+        />
+
         <Stack.Screen name="Login"
           component={Login}
         />

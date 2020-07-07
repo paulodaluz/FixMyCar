@@ -119,7 +119,7 @@ export default function Manutencoes(props) {
                 <View style={styles.botao}>
                     <Button
                         title="Salvar"
-                        color="#8B7D39"
+                        color="#5C5C5B"
                         onPress={() => { saveManutencao() }}
                     />
                 </View>
@@ -128,7 +128,7 @@ export default function Manutencoes(props) {
                 <View style={styles.botao}>
                     <Button
                         title="Limpar"
-                        color="#8B7D39"
+                        color="#5C5C5B"
                         onPress={clearImputs}
                     />
                 </View>
@@ -137,7 +137,7 @@ export default function Manutencoes(props) {
                 <View style={styles.botao}>
                     <Button
                         title="Voltar"
-                        color="#8B7D39"
+                        color="#5C5C5B"
                         onPress={back}
                     />
                 </View>
@@ -184,7 +184,7 @@ export default function Manutencoes(props) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#8B7D39',
+        backgroundColor: '#B5B3B2',
         alignItems: 'center',
         flexDirection: 'row',
         flexWrap: 'wrap',

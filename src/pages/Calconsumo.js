@@ -4,7 +4,7 @@ import { StyleSheet, Text, View, TextInput, Button, ImageBackground } from 'reac
 export default function Calconsumo(props) {
     const {navigation} = props
     const {route} = props
-    const {resultado, classific, km} = route.params
+    const {resultado, classific} = route.params
     
     return (
         <ImageBackground 

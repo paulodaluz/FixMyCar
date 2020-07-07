@@ -3,14 +3,14 @@ import { StyleSheet, Text, View } from 'react-native'
 const { expo } = require('../../app.json');
 import { Entypo } from '@expo/vector-icons'
 
-export default function Sobre(props) {
+export default function Faq(props) {
 
     const { navigation } = props
 
     const superior = props.route.params.superior
     useLayoutEffect(() => {
         superior.setOptions({
-            title: 'Sobre',
+            title: 'FAQ',
             headerLeft: () => (
                 <Entypo
                     name="menu"
@@ -26,10 +26,14 @@ export default function Sobre(props) {
     return (
         <View style={styles.container}>
             <Text>Nome: {expo.name}</Text>
+            <Text>Vesão: 1.0</Text>
+            <Text style={styles.titulo}>Funcionalidades do aplicativo</Text>
             <View style={styles.bloco}>
-                <Text style={styles.titulo}>Desenvolvido por:</Text>
-                <Text style={styles.texto}>Marcelo Portella - RA 1119714</Text>
-                <Text style={styles.texto}>Paulo d Luz - RA 1116505</Text>                
+                <Text style={styles.texto}>O objetivo do aplicativo é armazenar informações referente a manutenções 
+                                           de veículos, concumo/média de combustível. Também o cadastros de contatos como,
+                                           oficinas mecânicas, auto peças, auto eléticas, enfim todo e qualquer serviço
+                                           relacionado a manutenção de veículos. O aplicativo conta com a funcionalidade 
+                                           para visualização dos contatos no Google Maps.</Text>
             </View>
         </View>
     )

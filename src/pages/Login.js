@@ -106,14 +106,14 @@ export default function Login(props) {
                 <View style={styles.botao}>
                     <Button
                         title="Login"
-                        color="#8B7D39"
+                        color="#5C5C5B"
                         onPress={validarLogin}
                     />
                 </View>
                 <View style={styles.botao}>
                     <Button
                         title="Register"
-                        color="#8B7D39"
+                        color="#5C5C5B"
                         onPress={registrarLogin}
                     />
                 </View>
@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
     botao: {
         borderRadius: 10,
         borderWidth: 2,
-        borderColor: '#8B7D39',
+        borderColor: '#fff',
         width: "80%",
         padding: 5,
         marginTop: 5

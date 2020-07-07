@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet } from 'react-native'
+import { StyleSheet, Button } from 'react-native'
 import { decode, encode } from 'base-64'
 
 import 'react-native-gesture-handler'
@@ -34,14 +34,14 @@ if (!global.atob) {
 function MenuSide({ navigation }) {
   const superior = navigation
   const Drawer = createDrawerNavigator();
-  return (
+  return (    
     <Drawer.Navigator initialRouteName="Home"
       hideStatusBar={false}
       drawerStyle={{
         backgroundColor: 'white',
         width: 240,
       }}
-    >
+    >      
       <Drawer.Screen name="Home" component={Home} initialParams={{ superior }} />
       <Drawer.Screen name="Contatos" component={Contatos} initialParams={{ superior }} />
       <Drawer.Screen name="Mapa Contatos" component={MapaContatos} />
@@ -60,7 +60,7 @@ export default function App() {
   const Stack = createStackNavigator();
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Login">
+      <Stack.Navigator initialRouteName="Login">              
         <Stack.Screen name="MenuSide"
           component={MenuSide}
           options={{

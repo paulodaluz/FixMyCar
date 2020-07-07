@@ -1,5 +1,5 @@
 import React, { useLayoutEffect } from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View, FlatList } from 'react-native'
 const { expo } = require('../../app.json');
 import { Entypo } from '@expo/vector-icons'
 
@@ -25,30 +25,33 @@ export default function Arquitetura(props) {
 
     return (
         <View style={styles.container}>
-            <View style={styles.bloco}>
-                <Text style={styles.texto}>-> back_end </Text>
-                <Text style={styles.texto}>  -> firebase.js :(funções par conexão com o bacl end de sustentação)</Text>
-                <Text style={styles.texto}>-> pages </Text>
-                <Text style={styles.texto}>  -> Arquitetura.js :(arquitetura/disposição dos arquivos do projeto) </Text>
-                <Text style={styles.texto}>  -> Consumo.js :(tela(CRUD) para cadastro das informações necessárias para o armazenamento 
-                                                            das informações para cálculo da média de consumo de combustível) </Text>
-                <Text style={styles.texto}>  -> Calconsumo.js :(tela para visualização/métrica de consumo) </Text>
-                <Text style={styles.texto}>  -> Contatos.js :(tela(CRUD) para cadastro de contatos (Ex:Empresas e pessoass) ) </Text>
-                <Text style={styles.texto}>  -> Faq.js :(tela com informações do objetivo do aplicativo) </Text>
-                <Text style={styles.texto}>  -> Home.js :(tela principal + botões de acesso as funcionalidades) </Text>
-                <Text style={styles.texto}>  -> Login.js :(Controle de acesso ao aplicativo, registro/cadastro de 
-                                             novos acessos e armazenamento em memória de acessos "Manter conectado") </Text>
-                <Text style={styles.texto}>  -> Manutencao.js :(tela(CRUD) par cadastro das manutençõe realizadas no veículo) </Text>
-                <Text style={styles.texto}>  -> MapaContatos.js :(tela de para identificação geográfica (Google Maps) dos contatos cadastrados) </Text>                
-                <Text style={styles.texto}>  -> Sobre.js :(tela com informação dos desenvolvedores) </Text>                
-                <Text style={styles.texto}>-> services </Text>
-                <Text style={styles.texto}>  -> asyncStorage.js :() </Text>
-                <Text style={styles.texto}>  -> authService.js :() </Text>
-                <Text style={styles.texto}>  -> consumoService.js :() </Text>
-                <Text style={styles.texto}>  -> contatoService.js :() </Text>
-                <Text style={styles.texto}>  -> manutencoesService.js :() </Text>
+                <FlatList
+                    data={[
+                        {key: '-> back_end'},
+                        {key:'  -> firebase.js :(funções par conexão com o back end de sustentação)'},
+                        {key:'-> pages'},
+                        {key:'  -> Arquitetura.js :(arquitetura/disposição dos arquivos do projeto)'},
+                        {key:'  -> Consumo.js :(tela(CRUD) cadastro das informações necessárias para o armazenamento das informações para cálculo da média de consumo de combustível)'},
+                        {key:'  -> Calconsumo.js :(tela para visualização/métrica de consumo)'},
+                        {key:'  -> Contatos.js :(tela(CRUD) para cadastro de contatos (Ex:Empresas e pessoass))'},
+                        {key:'  -> Faq.js :(tela com informações do objetivo do aplicativo) '},
+                        {key:'  -> Home.js :(tela principal + botões de acesso as funcionalidades)'},
+                        {key:'  -> Login.js :(Controle de acesso ao aplicativo, registro/cadastro de novos acessos e armazenamento em memória de acessos "Manter conectado")'},
+                        {key:'  -> Manutencao.js :(tela(CRUD) par cadastro das manutençõe realizadas no veículo)'},
+                        {key:'  -> MapaContatos.js :(tela de para identificação geográfica (Google Maps) dos contatos cadastrados)'},
+                        {key:'  -> Sobre.js :(tela com informação dos desenvolvedores)'},
+                        {key:'-> services'},
+                        {key:'  -> asyncStorage.js :()'},
+                        {key:'  -> authService.js :()'},
+                        {key:'  -> consumoService.js :()'},
+                        {key:'  -> contatoService.js :()'},
+                        {key:'  -> manutencoesService.js :()'}
+                    ]}
+                    renderItem={
+                    ({item}) => <Text style={styles.texto}>{item.key}</Text>
+                    }
+                />
 
-            </View>
         </View>
     )
 }
